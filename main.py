@@ -1,4 +1,5 @@
 import tkinter as tk
+
 from words import Wordle
 
 window = tk.Tk()
@@ -9,27 +10,36 @@ frame1 = tk.Frame(window)
 frame2 = tk.Frame(window)
 frame3 = tk.Frame(window)
 
+ans = Wordle().question()
+times = 0
+
 header_label = tk.Label(frame1, text="Wordle", font=("Arial", 25))
 
 for i in range(6):
     for j in range(5):
-        tk.Label(frame2, text=" ", relief="flat", bg="gray", font=("Arial", 20), bd=10, fg="white").grid(row=i,
-                                                                                                         column=j,
-                                                                                                         padx=5, pady=5,
-                                                                                                         ipadx=8,
-                                                                                                         ipady=1)
+        tk.Label(frame2, text=" ", relief="flat", bg="gray", font=("Arial", 20), bd=10, fg="white", width=2,
+                 height=1).grid(row=i, column=j, padx=5, pady=5)
 
 var_input_word = tk.StringVar()
 input_word = tk.Entry(frame3, textvariable=var_input_word, show=None, font=("Arial", 15))
 
-header_label.pack()
-input_word.pack()
-frame1.pack()
-frame2.pack()
-frame3.pack()
+input_word.focus()
 
-ans = Wordle().question()
-times = 0
+
+def reset():
+    global times
+    global ans
+    ans = Wordle().question()
+    times = 0
+    input_word.delete(0, "end")
+    for i in range(6):
+        for j in range(5):
+            tk.Label(frame2, text=" ", relief="flat", bg="gray", font=("Arial", 20), bd=10, fg="white", width=2,
+                     height=1).grid(row=i, column=j, padx=5, pady=5)
+    window.update_idletasks()
+
+
+reset_bttn = tk.Button(frame3, text="Restart", font=("Arial", 15), command=reset)
 
 
 def check_answer(event):
@@ -47,34 +57,29 @@ def check_answer(event):
             for j in range(len(ans)):
                 if l[i] == "":
                     tk.Label(frame2, text=guess[i], relief="flat", bg="gray", font=("Arial", 20), bd=10,
-                             fg="white").grid(row=times - 1,
-                                              column=i,
-                                              padx=5, pady=5,
-                                              ipadx=8,
-                                              ipady=1)
+                             fg="white", width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
                 if guess[i] == ans[j]:
                     if i == j:
                         tk.Label(frame2, text=guess[i], relief="flat", bg="green", font=("Arial", 20), bd=10,
-                                 fg="white").grid(row=times - 1,
-                                                  column=i,
-                                                  padx=5, pady=5,
-                                                  ipadx=8,
-                                                  ipady=1)
+                                 fg="white", width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
                         l[i] = "g"
                     elif l[i] != "g":
                         tk.Label(frame2, text=guess[i], relief="flat", bg="orange", font=("Arial", 20), bd=10,
-                                 fg="white").grid(row=times - 1,
-                                                  column=i,
-                                                  padx=5, pady=5,
-                                                  ipadx=8,
-                                                  ipady=1)
+                                 fg="white", width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
                         l[i] = "o"
-        if l == ["g","g", "g", "g", "g"]: times = 6
+        if l == ["g", "g", "g", "g", "g"]: times = 6
     else:
         print("沒有這個單字")
     if times == 6:
         print("答案是", ans)
 
+
+header_label.pack()
+input_word.pack()
+reset_bttn.pack()
+frame1.pack()
+frame2.pack()
+frame3.pack()
 
 window.bind("<Return>", check_answer)
 
