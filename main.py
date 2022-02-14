@@ -51,22 +51,31 @@ def check_answer(event):
         print("請重新輸入,字數要對")
     elif wordle.check(guess):
         times += 1
-        l = ["", "", "", "", ""]
-        for i in range(len(ans)):
-            for j in range(len(ans)):
-                if l[i] == "":
-                    tk.Label(frame2, text=guess[i], relief="flat", bg="gray", font=("Arial", 20), bd=10,
-                             fg="white", width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
-                if guess[i] == ans[j]:
+        check_list = ["", "", "", "", ""]
+        guess_set = set()
+        for i in range(5):
+            guess_set.add(guess[i])
+        for i in range(5):
+            for j in range(5):
+                if guess[i] == ans[j] and ans[j] in guess_set:
                     if i == j:
-                        tk.Label(frame2, text=guess[i], relief="flat", bg="green", font=("Arial", 20), bd=10,
-                                 fg="white", width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
-                        l[i] = "g"
-                    elif l[i] != "g":
-                        tk.Label(frame2, text=guess[i], relief="flat", bg="orange", font=("Arial", 20), bd=10,
-                                 fg="white", width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
-                        l[i] = "o"
-        if l == ["g", "g", "g", "g", "g"]: times = 6
+                        check_list[i] = "g"
+                        guess_set.remove(ans[j])
+                    elif check_list[i] != "g":
+                        check_list[i] = "o"
+                        guess_set.remove(ans[j])
+        for i in range(5):
+            if check_list[i] == "g":
+                tk.Label(frame2, text=guess[i], relief="flat", bg="green", font=("Arial", 20), bd=10, fg="white",
+                         width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
+            elif check_list[i] == "o":
+                tk.Label(frame2, text=guess[i], relief="flat", bg="orange", font=("Arial", 20), bd=10,
+                         fg="white", width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
+            else:
+                tk.Label(frame2, text=guess[i], relief="flat", bg="gray", font=("Arial", 20), bd=10, fg="white",
+                         width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
+        if check_list == ["g", "g", "g", "g", "g"]:
+            times = 6
     else:
         print("沒有這個單字")
     if times == 6:
@@ -83,3 +92,34 @@ frame3.pack()
 window.bind("<Return>", check_answer)
 
 window.mainloop()
+
+# def check_answer(event):
+#     global times
+#     if times == 6: return
+#     guess = var_input_word.get()
+#     input_word.delete(0, "end")
+#     window.update_idletasks()
+#     if len(guess) != len(ans):
+#         print("請重新輸入,字數要對")
+#     elif wordle.check(guess):
+#         times += 1
+#         l = ["", "", "", "", ""]
+#         for i in range(len(ans)):
+#             for j in range(len(ans)):
+#                 if l[i] == "":
+#                     tk.Label(frame2, text=guess[i], relief="flat", bg="gray", font=("Arial", 20), bd=10,
+#                              fg="white", width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
+#                 if guess[i] == ans[j]:
+#                     if i == j:
+#                         tk.Label(frame2, text=guess[i], relief="flat", bg="green", font=("Arial", 20), bd=10,
+#                                  fg="white", width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
+#                         l[i] = "g"
+#                     elif l[i] != "g":
+#                         tk.Label(frame2, text=guess[i], relief="flat", bg="orange", font=("Arial", 20), bd=10,
+#                                  fg="white", width=2, height=1).grid(row=times - 1, column=i, padx=5, pady=5)
+#                         l[i] = "o"
+#         if l == ["g", "g", "g", "g", "g"]: times = 6
+#     else:
+#         print("沒有這個單字")
+#     if times == 6:
+#         print("答案是", ans)
