@@ -1,16 +1,15 @@
 import tkinter as tk
-
-from words import Wordle
+import wordle
 
 window = tk.Tk()
 window.title("Wordle")
-window.geometry("800x600")
+window.geometry("350x500")
 
 frame1 = tk.Frame(window)
 frame2 = tk.Frame(window)
 frame3 = tk.Frame(window)
 
-ans = Wordle().question()
+ans = wordle.question()
 times = 0
 
 header_label = tk.Label(frame1, text="Wordle", font=("Arial", 25))
@@ -29,7 +28,7 @@ input_word.focus()
 def reset():
     global times
     global ans
-    ans = Wordle().question()
+    ans = wordle.question()
     times = 0
     input_word.delete(0, "end")
     for i in range(6):
@@ -39,7 +38,7 @@ def reset():
     window.update_idletasks()
 
 
-reset_bttn = tk.Button(frame3, text="Restart", font=("Arial", 15), command=reset)
+reset_btn = tk.Button(frame3, text="Restart", font=("Arial", 15), command=reset)
 
 
 def check_answer(event):
@@ -50,7 +49,7 @@ def check_answer(event):
     window.update_idletasks()
     if len(guess) != len(ans):
         print("請重新輸入,字數要對")
-    elif Wordle().check(guess):
+    elif wordle.check(guess):
         times += 1
         l = ["", "", "", "", ""]
         for i in range(len(ans)):
@@ -76,7 +75,7 @@ def check_answer(event):
 
 header_label.pack()
 input_word.pack()
-reset_bttn.pack()
+reset_btn.pack()
 frame1.pack()
 frame2.pack()
 frame3.pack()
@@ -84,28 +83,3 @@ frame3.pack()
 window.bind("<Return>", check_answer)
 
 window.mainloop()
-
-# ans = Wordle().question()
-# location = []
-# right = "______"
-# while True:
-#     guess = str(input("輸入要猜的英文單字:"))
-#     if guess == ans:
-#         break
-#     if guess == "ans":
-#         print(ans)
-#     elif len(guess) != len(ans):
-#         print("請重新輸入,字數要對")
-#     if Wordle().check(guess):
-#         for i in range(len(ans)):
-#             for j in range(len(ans)):
-#                 if guess[i] == ans[j]:
-#                     if guess[i] not in location:
-#                         location.append(guess[i])
-#                     if i == j:
-#                         right = right[:i] + guess[i] + right[i + 1:]
-#         print(right[:len(ans)])
-#         print("對的字：", location)
-#     else:
-#         print("沒有這個單字")
-# print("恭喜你猜對啦")
