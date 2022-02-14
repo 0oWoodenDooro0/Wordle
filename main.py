@@ -52,9 +52,7 @@ def check_answer(event):
     elif wordle.check(guess):
         times += 1
         check_list = ["", "", "", "", ""]
-        guess_set = set()
-        for i in range(5):
-            guess_set.add(guess[i])
+        guess_set = set(guess)
         for i in range(5):
             for j in range(5):
                 if guess[i] == ans[j] and ans[j] in guess_set:
