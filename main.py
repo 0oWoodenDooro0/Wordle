@@ -52,16 +52,16 @@ def check_answer(event):
     elif wordle.check(guess):
         times += 1
         check_list = ["", "", "", "", ""]
-        guess_set = set(guess)
+        ans_list = list(ans)
         for i in range(5):
             for j in range(5):
-                if guess[i] == ans[j] and ans[j] in guess_set:
+                if guess[i] == ans[j] and ans[j] in ans_list:
                     if i == j:
                         check_list[i] = "g"
-                        guess_set.remove(ans[j])
+                        ans_list.remove(ans[j])
                     elif check_list[i] != "g":
                         check_list[i] = "o"
-                        guess_set.remove(ans[j])
+                        ans_list.remove(ans[j])
         for i in range(5):
             if check_list[i] == "g":
                 tk.Label(frame2, text=guess[i], relief="flat", bg="green", font=("Arial", 20), bd=10, fg="white",
