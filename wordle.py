@@ -1082,9 +1082,11 @@ allow = ["aahed", "aalii", "aargh", "aarti", "abaca", "abaci", "abacs", "abaft",
          "zoppa", "zoppo", "zoril", "zoris", "zorro", "zouks", "zowee", "zowie", "zulus", "zupan", "zupas", "zuppa",
          "zurfs", "zuzim", "zygal", "zygon", "zymes", "zymic"]
 
+
 def question():
-    r = random.randint(0,len(q) - 1)
+    r = random.randint(0, len(q) - 1)
     return q[r]
+
 
 def check(guess):
     if guess in q:
