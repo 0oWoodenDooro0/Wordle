@@ -25,7 +25,7 @@ input_word = tk.Entry(frame3, textvariable=var_input_word, show=None, font=("Ari
 input_word.focus()
 
 
-def reset(event):
+def reset(event = None):
     global times
     global ans
     ans = wordle.question()
